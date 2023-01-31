@@ -1,0 +1,6 @@
+fastapi
+gunicorn
+pytest
+python-dotenv
+uvicorn
+coverage

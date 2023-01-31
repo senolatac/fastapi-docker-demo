@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  parserworkerapp:
+    image: senolatac/demo-ec2-docker-swarm:latest
+    networks:
+      - overlay_new
+    environment:
+      - name={{.Service.Name}}
+      - rep_id={{.Task.Slot}}
+    deploy:
+      replicas: 2
+      placement:
+        max_replicas_per_node: 1
+      update_config:
+        parallelism: 10
+        delay: 1s
+      restart_policy:
+        condition: on-failure
+        delay: 1s
+        window: 6s
+      endpoint_mode: vip #the service will use a virtual ip.
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2500M
+        reservations:
+          cpus: '0.01'
+          memory: 500M
+
+networks:
+  overlay_new:
